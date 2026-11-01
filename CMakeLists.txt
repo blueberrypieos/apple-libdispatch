@@ -1,3 +1,4 @@
+# Modified 2026-10-29 for pietoolchain: tests, man pages, and the Objective-C, Swift and Darwin-only parts removed.
 
 cmake_minimum_required(VERSION 3.15.1)
 
@@ -125,7 +126,6 @@ include(CheckLibraryExists)
 include(CheckLinkerFlag)
 include(CheckSymbolExists)
 include(GNUInstallDirs)
-include(CTest)
 
 include(DispatchAppleOptions)
 include(DispatchSanitization)
@@ -169,7 +169,7 @@ option(INSTALL_PRIVATE_HEADERS "installs private headers in the same location as
 
 option(ENABLE_SWIFT "enable libdispatch swift overlay" OFF)
 if(ENABLE_SWIFT)
-  enable_language(Swift)
+  message(FATAL_ERROR "This fork has no Swift overlay (src/swift).")
 endif()
 
 option(ENABLE_THREAD_LOCAL_STORAGE "enable usage of thread local storage via _Thread_local" ON)
@@ -341,12 +341,8 @@ endif()
 
 
 add_subdirectory(dispatch)
-add_subdirectory(man)
 add_subdirectory(os)
 add_subdirectory(private)
 add_subdirectory(src)
-if(BUILD_TESTING)
-  add_subdirectory(tests)
-endif()
 
 add_subdirectory(cmake/modules)

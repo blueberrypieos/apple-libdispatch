@@ -1,3 +1,4 @@
+# Modified 2026-10-29 for pietoolchain: tests, man pages, and the Objective-C, Swift and Darwin-only parts removed.
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
   add_subdirectory(BlocksRuntime)
@@ -81,15 +82,6 @@ if(ENABLE_DTRACE)
     ${dispatch_dtrace_provider_headers})
 endif()
 
-if(HAVE_OBJC)
-  # TODO(compnerd) split DispatchStubs.cc into a separate component for the ObjC
-  # registration and a separate component for the swift compiler's emission of a
-  # call to the ObjC autorelease elision entry point.
-  target_sources(dispatch PRIVATE
-    data.m
-    object.m
-    swift/DispatchStubs.cc)
-endif()
 
 
 set_target_properties(dispatch PROPERTIES
@@ -170,8 +162,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL Darwin)
   set_property(TARGET dispatch APPEND_STRING PROPERTY LINK_FLAGS
     "-Xlinker -compatibility_version -Xlinker 1"
     "-Xlinker -current_version -Xlinker ${VERSION}"
-    "-Xlinker -dead_strip"
-    "-Xlinker -alias_list -Xlinker ${PROJECT_SOURCE_DIR}/xcodeconfig/libdispatch.aliases")
+    "-Xlinker -dead_strip")
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|Windows")
@@ -180,10 +171,6 @@ endif()
 
 if(LINKER_SUPPORTS_BUILD_ID)
   target_link_options(dispatch PRIVATE "LINKER:--build-id=sha1")
-endif()
-
-if(ENABLE_SWIFT)
-  add_subdirectory(swift)
 endif()
 
 set_property(GLOBAL APPEND PROPERTY DISPATCH_EXPORTS dispatch)
